@@ -1,0 +1,115 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "AI Academic Assistant",
+    "version": "1.0.0",
+    "description": "Upload academic PDFs and ask questions with RAG-powered answers."
+  },
+  "paths": {
+    "/papers": {
+      "post": {
+        "summary": "Upload research papers (PDF)",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "files": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    },
+                    "description": "One or more PDF files"
+                  }
+                },
+                "required": ["files"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Upload succeeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string", "example": "success" },
+                    "documents": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "description": "Generated document IDs"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "No files provided / invalid input" }
+        }
+      }
+    },
+    "/query": {
+      "post": {
+        "summary": "Ask a question about uploaded papers",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QueryRequest"
+              },
+              "examples": {
+                "SampleQuestion": {
+                  "value": { "question": "What are the main findings on gene X?" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Answer generated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QueryResponse"
+                }
+              }
+            }
+          },
+          "400": { "description": "Validation error" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "QueryRequest": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "type": "string",
+            "example": "Summarize the methodology used in the 2019 Smith et al. paper."
+          }
+        },
+        "required": ["question"]
+      },
+      "QueryResponse": {
+        "type": "object",
+        "properties": {
+          "answer": { "type": "string" },
+          "sources": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Original PDF filenames cited"
+          }
+        }
+      }
+    }
+  }
+}

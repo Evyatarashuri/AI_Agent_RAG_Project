@@ -1,0 +1,10 @@
+FROM llama2
+
+# System prompt – sets consistent behavior for academic Q&A
+SYSTEM "You are an academic assistant. Answer questions based only on the provided context. Be concise, accurate, and always cite sources when relevant."
+
+# Optionally tune parameters (adjust as needed)
+PARAMETER temperature 0.3
+PARAMETER top_k 40
+PARAMETER top_p 0.9
+PARAMETER num_predict 512

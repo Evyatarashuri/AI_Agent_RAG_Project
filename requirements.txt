@@ -1,0 +1,13 @@
+flask
+pydantic
+pypdf2
+python-docx
+sentence-transformers
+chromadb
+pymongo
+flask-swagger-ui
+python-dotenv
+httpx
+uvicorn[standard]
+flask-cors
+flasgger

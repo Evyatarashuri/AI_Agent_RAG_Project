@@ -1,0 +1,64 @@
+version: "3.9"
+
+services:
+  flask_app:
+    build:
+      context: .
+    container_name: flask_app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - ollama
+      - chroma
+      - mongo
+    environment:
+      - FLASK_ENV=development
+      - OLLAMA_URL=http://ollama:11434
+      - CHROMA_HOST=chroma
+      - MONGO_URI=mongodb://mongo:27017/
+    restart: unless-stopped
+
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+    command: serve
+    restart: unless-stopped
+
+
+  chroma:
+    image: ghcr.io/chroma-core/chroma:latest
+    container_name: chroma
+    ports:
+      - "8001:8000"
+    volumes:
+      - chroma_data:/chroma
+    restart: unless-stopped
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    restart: unless-stopped
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo
+    depends_on:
+      - mongo
+    restart: unless-stopped
+
+volumes:
+  ollama_models:
+  chroma_data:
+  mongo_data:
