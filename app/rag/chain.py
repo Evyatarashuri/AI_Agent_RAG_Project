@@ -14,13 +14,19 @@ def format_prompt(context: list[str], question: str) -> str:
 def run_rag_pipeline(question: str):
     start = time.time()
 
+    print("Start to run RAG pipeline")
+
     embedding = get_embedding(question)
+    print("Embedding Successful")
+
     results = query_chroma(embedding)
+    print("ChromaDB Query Successful")
 
     contexts = results["documents"][0]
     metadatas = results["metadatas"][0]
 
     prompt = format_prompt(contexts, question)
+    print("Prompt formatted successfully")
 
     response = httpx.post(
         f"{Config.OLLAMA_URL}/api/generate",
