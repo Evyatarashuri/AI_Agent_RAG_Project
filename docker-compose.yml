@@ -4,7 +4,7 @@ services:
   flask_app:
     build:
       context: .
-    container_name: flask_app
+      dockerfile: Dockerfile.flask
     ports:
       - "8000:8000"
     depends_on:
@@ -19,13 +19,13 @@ services:
     restart: unless-stopped
 
   ollama:
-    image: ollama/ollama
-    container_name: ollama
+    build:
+      context: .
+      dockerfile: Dockerfile.ollama
     ports:
       - "11434:11434"
     volumes:
       - ollama_models:/root/.ollama
-    command: serve
     restart: unless-stopped
 
 

@@ -1,11 +1,11 @@
-name: llama-cpp-4b
-base_model: llama-cpp-4b
+name: llama3-custom
+base_model: llama3
 description: |
-  A lightweight LLaMA 4B model suitable for CPU-only usage and faster inference.
-  Ideal for local setups with limited hardware resources.
+  Customized LLaMA 3 model for academic Q&A tasks with better instruction tuning.
+  Suitable for Retrieval-Augmented Generation (RAG) pipelines.
 system_prompt: |
-  You are a helpful AI assistant specializing in academic questions.
-  Provide clear and concise answers based on provided documents.
+  You are an academic assistant. Provide helpful, accurate answers to user questions based on the context provided.
+  Cite your sources when applicable.
 temperature: 0.6
 max_tokens: 512
 stop_sequences:

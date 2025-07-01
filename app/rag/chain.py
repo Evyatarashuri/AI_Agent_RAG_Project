@@ -31,11 +31,13 @@ def run_rag_pipeline(question: str):
     response = httpx.post(
         f"{Config.OLLAMA_URL}/api/generate",
         json={
-            "model": "llama2",
-            "prompt": prompt
+            "model": "llama3",
+            "prompt": prompt, 
+            "stream": False
         },
         timeout=60.0
     )
+
     response.raise_for_status()
     answer = response.json()["response"].strip()
 
