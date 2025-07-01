@@ -4,7 +4,7 @@ from app.config import Config
 from app.api.swagger import swagger_bp
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder="static", static_url_path="/static")
     app.config.from_object(Config)
 
     app.register_blueprint(api_bp, url_prefix="/api")
