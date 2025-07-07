@@ -15,7 +15,7 @@ download_model() {
   fi
 }
 
-download_model "llama3"
+download_model "mistral"
 download_model "nomic-embed-text"
 
 wait

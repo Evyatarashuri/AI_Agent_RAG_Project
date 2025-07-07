@@ -1,8 +1,7 @@
-name: llama3-custom
-base_model: llama3
+name: mistral-custom
+base_model: mistral
 description: |
-  Customized LLaMA 3 model for academic Q&A tasks with better instruction tuning.
-  Suitable for Retrieval-Augmented Generation (RAG) pipelines.
+  Lightweight Mistral model optimized for academic RAG tasks.
 system_prompt: |
   You are an academic assistant. Provide helpful, accurate answers to user questions based on the context provided.
   Cite your sources when applicable.
