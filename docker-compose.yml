@@ -11,11 +11,19 @@ services:
       - ollama
       - chroma
       - mongo
+    env_file:
+      - .env
     environment:
-      - FLASK_ENV=development
-      - OLLAMA_URL=http://ollama:11434
-      - CHROMA_HOST=chroma
-      - MONGO_URI=mongodb://mongo:27017/
+      - MONGO_URI=${MONGO_URI}
+      - CHROMA_COLLECTION_NAME=${CHROMA_COLLECTION_NAME}
+      - EMBEDDING_MODEL=${EMBEDDING_MODEL}
+      - CHAT_MODEL=${CHAT_MODEL}
+      - OLLAMA_URL=${OLLAMA_URL}
+      - MAX_CHUNK_SIZE=${MAX_CHUNK_SIZE}
+      - SWAGGER_URL=${SWAGGER_URL}
+      - API_URL=${API_URL}
+      - FLASK_APP=${FLASK_APP}
+      - FLASK_RUN_HOST=${FLASK_RUN_HOST}
     restart: unless-stopped
 
   ollama:
@@ -28,7 +36,6 @@ services:
       - ollama_models:/root/.ollama
     restart: unless-stopped
 
-
   chroma:
     image: ghcr.io/chroma-core/chroma:latest
     container_name: chroma
@@ -37,17 +44,16 @@ services:
     volumes:
       - chroma_data:/chroma
     restart: unless-stopped
+    environment:
+      - CHROMADB_TELEMETRY_ENABLED=false
 
   mongo:
     image: mongo
-    container_name: mongo
+    container_name: mongo_db
     ports:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=1234
     restart: unless-stopped
 
   mongo-express:
@@ -55,12 +61,16 @@ services:
     container_name: mongo-express
     ports:
       - "8081:8081"
+    env_file:
+      - .env
     environment:
-      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
-      - ME_CONFIG_MONGODB_ADMINPASSWORD=1234
-      - ME_CONFIG_MONGODB_SERVER=mongo
-      - ME_CONFIG_MONGODB_AUTH_DATABASE=admin
-      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=${ME_CONFIG_MONGODB_ADMINUSERNAME}
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=${ME_CONFIG_MONGODB_ADMINPASSWORD}
+      - ME_CONFIG_MONGODB_SERVER=${ME_CONFIG_MONGODB_SERVER}
+      - ME_CONFIG_MONGODB_AUTH_DATABASE=${ME_CONFIG_MONGODB_AUTH_DATABASE}
+      - ME_CONFIG_MONGODB_ENABLE_ADMIN=${ME_CONFIG_MONGODB_ENABLE_ADMIN}
+      - ME_CONFIG_BASICAUTH_USERNAME=${ME_CONFIG_BASICAUTH_USERNAME}
+      - ME_CONFIG_BASICAUTH_PASSWORD=${ME_CONFIG_BASICAUTH_PASSWORD}
     depends_on:
       - mongo
     restart: unless-stopped

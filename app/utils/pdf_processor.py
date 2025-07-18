@@ -5,6 +5,7 @@ from app.database.chroma_client import add_to_chroma
 from app.config import Config
 
 
+
 def chunk_text(text: str, max_size: int = 1000) -> list[str]:
     """Splits text into chunks of maximum `max_size` characters."""
     return [text[i:i + max_size] for i in range(0, len(text), max_size)]

@@ -15,7 +15,7 @@ download_model() {
   fi
 }
 
-download_model "mistral"
-download_model "nomic-embed-text"
+download_model "${CHAT_MODEL}"
+download_model "${EMBEDDING_MODEL}"
 
 wait

@@ -1,12 +1,15 @@
-name: mistral-custom
-base_model: mistral
-description: |
-  Lightweight Mistral model optimized for academic RAG tasks.
-system_prompt: |
-  You are an academic assistant. Provide helpful, accurate answers to user questions based on the context provided.
-  Cite your sources when applicable.
-temperature: 0.6
-max_tokens: 512
-stop_sequences:
-  - "\n\n"
-embedding_model: nomic-embed-text
+FROM mistral
+
+# Description of the model
+LICENSE "Lightweight Mistral model optimized for academic RAG tasks."
+
+# System prompt for the model
+SYSTEM """
+You are an academic assistant. Provide helpful, accurate answers to user questions based on the context provided.
+Cite your sources when applicable.
+"""
+
+# Model parameters
+PARAMETER temperature 0.6
+PARAMETER num_predict 512
+PARAMETER stop "\n\n"
